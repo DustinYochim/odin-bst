@@ -188,8 +188,32 @@ class Tree {
       }
     }
   }
-  isBalanced() {}
-  reBalance() {}
+  isBalanced(root = this.root) {
+    let lh;
+    let rh;
+
+    // Empty tree is height balanced
+    if (root === null) return true;
+
+    // Get height of left and right sub-tree
+    lh = this.height(root.left);
+    rh = this.height(root.right);
+
+    // If the difference between heights of left subtree and right subtree is <= 1 then tree is balanced
+    if (
+      Math.abs(lh - rh) <= 1 &&
+      this.isBalanced(root.left) &&
+      this.isBalanced(root.right)
+    ) {
+      return true;
+    }
+    // Otherwise tree is not balanced
+    return false;
+  }
+  reBalance() {
+    let arr = this.inOrder();
+    this.root = this.buildTree(arr, 0, arr.length - 1);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -209,5 +233,21 @@ let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let tree = new Tree(arr);
 prettyPrint(tree.root);
-console.log(tree.height(tree.root));
-console.log(tree.depth(tree.root));
+console.log(tree.isBalanced());
+console.log(tree.levelOrder());
+console.log(tree.preOrder());
+console.log(tree.postOrder());
+console.log(tree.inOrder());
+tree.insert(6500);
+tree.insert(7500);
+tree.insert(8500);
+tree.insert(9500);
+prettyPrint(tree.root);
+console.log(tree.isBalanced());
+tree.reBalance();
+prettyPrint(tree.root);
+console.log(tree.isBalanced());
+console.log(tree.levelOrder());
+console.log(tree.preOrder());
+console.log(tree.postOrder());
+console.log(tree.inOrder());

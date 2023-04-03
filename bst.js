@@ -112,7 +112,84 @@ class Tree {
     }
     return arr;
   }
-  inOrder(fnc) {}
+  inOrder(fnc, arr = [], root = this.root) {
+    // left -> root -> right
+
+    // Base Case
+    if (root === null) return;
+    // 1. Visit left sub-tree
+    this.inOrder(fnc, arr, root.left);
+    // 2. Visit root
+    arr.push(root.data);
+    if (fnc) fnc(root.data);
+    // 3. Visit right sub-tree
+    this.inOrder(fnc, arr, root.right);
+
+    // Return arr
+    return arr;
+  }
+  preOrder(fnc, arr = [], root = this.root) {
+    // root -> left -> right
+
+    // Base Case
+    if (root === null) return;
+    // 1. Visit root
+    arr.push(root.data);
+    if (fnc) fnc(root.data);
+    // 2. Visit left sub-tree
+    this.preOrder(fnc, arr, root.left);
+    // 3. Visit right sub-tree
+    this.preOrder(fnc, arr, root.right);
+
+    // Return arr
+    return arr;
+  }
+  postOrder(fnc, arr = [], root = this.root) {
+    // left -> right -> root
+
+    // Base Case
+    if (root === null) return;
+
+    // 1. Visit left sub-tree
+    this.postOrder(fnc, arr, root.left);
+    // 2. Visit right sub-tree
+    this.postOrder(fnc, arr, root.right);
+    // 3. Visit root
+    arr.push(root.data);
+    if (fnc) fnc(root.data);
+
+    // Return array
+    return arr;
+  }
+  height(root = this.root) {
+    // Base Case
+    if (root === null) return -1;
+
+    // Recursive Cases
+    let leftHeight = this.height(root.left);
+    let rightHeight = this.height(root.right);
+
+    // Return
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+  depth(root = this.root) {
+    let distance = 0;
+    let current = this.root;
+
+    while (current) {
+      if (root.data < current.data) {
+        current = current.left;
+        distance++;
+      } else if (root.data > current.data) {
+        current = current.right;
+        distance++;
+      } else {
+        return distance;
+      }
+    }
+  }
+  isBalanced() {}
+  reBalance() {}
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -132,3 +209,5 @@ let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let tree = new Tree(arr);
 prettyPrint(tree.root);
+console.log(tree.height(tree.root));
+console.log(tree.depth(tree.root));

@@ -82,6 +82,37 @@ class Tree {
     }
     return root;
   }
+  find(key) {
+    let current = this.root;
+
+    while (current) {
+      if (key < current.data) {
+        current = current.left;
+      } else if (key > current.data) {
+        current = current.right;
+      } else {
+        return current;
+      }
+    }
+    return null;
+  }
+  levelOrder(fnc) {
+    //  traverse the tree in breadth-first level order and provide each node as the argument to the provided function.
+    let queue = [this.root];
+    let arr = [];
+    let current;
+    while (queue.length > 0) {
+      // Get first element from queue
+      current = queue.shift();
+      arr.push(current.data);
+      if (fnc) fnc(current);
+      // Add current elements children to the queue
+      if (current.left !== null) queue.push(current.left);
+      if (current.right !== null) queue.push(current.right);
+    }
+    return arr;
+  }
+  inOrder(fnc) {}
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -100,8 +131,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let tree = new Tree(arr);
-tree.insert(2);
-tree.insert(13);
-prettyPrint(tree.root);
-tree.delete(9);
 prettyPrint(tree.root);
